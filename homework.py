@@ -60,6 +60,12 @@ class Lecturer(Mentor):
         res = f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {self.count_avarage():.2f}'
         return res
 
+    def __lt__(self, other):
+        if not isinstance(other, Lecturer):
+            print('Not a Lecturer')
+            return
+        return self.count_avarage() < other.count_avarage()
+
 
 class Reviewer(Mentor):
     def __init__(self, name, surname):
