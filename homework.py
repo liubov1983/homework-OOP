@@ -24,7 +24,8 @@ class Student:
         return sum(count) / len(count)
 
     def __str__(self):
-        res = f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка домашние задания: {self.count_avarage():.2f}' \
+        res = f'Имя: {self.name}\nФамилия: {self.surname}\n' \
+              f'Средняя оценка за домашние задания: {self.count_avarage():.2f}' \
                f'\nКурсы в процессе изучения: {", ".join(self.courses_in_progress)}\n' \
                f'Завершенные курсы: {", ".join(self.finished_courses)}'
         return res
@@ -86,6 +87,22 @@ class Reviewer(Mentor):
         return res
 
 
+def get_avarage_student(students, course):
+    count = []
+    for student in students:
+        for grade in student.grades[course]:
+            count += [grade]
+    return sum(count) / len(count)
+
+
+def get_avarage_lecturer(lecturers, course):
+    count = []
+    for lecturer in lecturers:
+        for grade in lecturer.grades[course]:
+            count += [grade]
+    return sum(count) / len(count)
+
+
 best_student = Student('Ruoy', 'Eman', 'your_gender')
 best_student.courses_in_progress += ['Python', 'JS']
 best_student.finished_courses += ['Git']
@@ -100,20 +117,25 @@ cool_reviewer.rate_hw(best_student, 'Python', 10)
 cool_reviewer.rate_hw(best_student, 'Python', 8)
 cool_reviewer.rate_hw(best_student, 'Python', 10)
 cool_reviewer.rate_hw(best_student, 'JS', 10)
+
 cool_reviewer.rate_hw(other_student, 'Python', 10)
+
+another_reviewer = Reviewer('Mark', 'Black')
+another_reviewer.courses_attached += ['Git', 'JS']
 
 cool_lecturer = Lecturer('Harry', 'Smith')
 cool_lecturer.courses_attached += ['JS']
-best_student.rate(cool_lecturer, 'JS', 10)
-best_student.rate(cool_lecturer, 'JS', 5)
-best_student.rate(cool_lecturer, 'JS', 10)
 
-print(cool_reviewer)
-print()
-print(cool_lecturer)
-print()
-print(best_student)
-print()
-print(other_student)
-print()
-print(best_student.__lt__(other_student))
+another_lecturer = Lecturer('Bobby', 'Brown')
+another_lecturer.courses_attached += ['Git', 'JS']
+
+best_student.rate(cool_lecturer, 'JS', 10)
+other_student.rate(cool_lecturer, 'JS', 5)
+best_student.rate(another_lecturer, 'JS', 9)
+other_student.rate(another_lecturer, 'JS', 8)
+
+student_list = [best_student, other_student]
+lecturer_list = [cool_lecturer, another_lecturer]
+
+print(get_avarage_student(student_list, 'Python'))
+print(get_avarage_student(lecturer_list, 'JS'))
